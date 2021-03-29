@@ -8,7 +8,11 @@ $.ajax( '../data/page.json' )
       //   console.log( newItem );
       newItem.renderData();
     }
-    );} );
+    );
+    // $( '#filter' ).on( 'change', renderSelected );
+
+  }
+  );
 
 
 // Creating our main Constructor; note that it only takes one parameter.
@@ -31,7 +35,8 @@ Items.prototype.renderData = function(){
   itemsClone.find( 'img' ).attr( 'src' , this.imageUrl );
   itemsClone.find( 'p' ).text( this.description );
   console.log( this.title );
-  itemsClone.addClass( this.keyword );
+//   itemsClone.addClass( this.keyword );
+
   $( 'main' ).append( itemsClone );
 
 };
@@ -42,11 +47,17 @@ function renderSelected ( ) {
   let selected = $( '#filter' ).val();
   console.log( selected );
   $( 'section' ).hide();
-  $( `.${selected}` ).show();
+  allItems.forEach( element=> {
+    if( element.keyword === selected ){
+      element.renderData();
+
+    }
+    // console.log( element.title );
+  }
+  );
+
+
 }
-
-
-
 
 
 
