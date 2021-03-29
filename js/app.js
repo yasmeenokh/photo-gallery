@@ -7,8 +7,10 @@ $.ajax( '../data/page.json' )
       let newItem = new Items( val );
       //   console.log( newItem );
       newItem.renderData();
-    }
-    );} );
+    } );
+    $( '#photo-template' ).first().remove();
+
+  } );
 
 
 // Creating our main Constructor; note that it only takes one parameter.
