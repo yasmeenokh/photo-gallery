@@ -1,15 +1,21 @@
 'use strict';
 
+// This array is created to push the options of the drop list.
+let optionArray = [];
+
 // Get the data from the jason file
 $.ajax( '/data/page.json' )
   .then( allData =>{
     allData.forEach( val =>{
       let newItem = new Items( val );
-      //   console.log( newItem );
+      console.log( newItem );
       newItem.renderData();
     } );
+    // Here we are preventing the repetition of the options of the drop list.
+    let dropList = [...new Set( optionArray )];
+    dropList.forEach( option=> renderOption( option ) );
+    // Here we are removing the first empty section rendered.
     $( '#photo-template' ).first().remove();
-
   } );
 
 
@@ -21,6 +27,7 @@ function Items( objectData ) {
   this.keyword = objectData.keyword;
   this.horns = objectData.horns;
   allItems.push( this );
+  optionArray.push( this.keyword );
 }
 
 let allItems = [];
@@ -38,8 +45,15 @@ Items.prototype.renderData = function(){
 
 };
 
+// Function to render the drop down list
+const renderOption = option =>{
+  $( '#filter' ).append( `<option class="option"> ${option}</option>` );
+};
+
+// To render the selected items only on click.
 $( '#filter' ).on( 'change', renderSelected );
 
+// Function to render the selected items
 function renderSelected ( ) {
   let selected = $( '#filter' ).val();
   console.log( selected );
