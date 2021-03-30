@@ -1,22 +1,45 @@
 'use strict';
+// if ($('#pageOne').attr('id') === "pageOne"){
 
 // This array is created to push the options of the drop list.
 let optionArray = [];
-
+// let newItem;
 // Get the data from the jason file
-$.ajax( './data/page.json' )
-  .then( allData =>{
-    allData.forEach( val =>{
-      let newItem = new Items( val );
-      console.log( newItem );
-      newItem.renderData();
+
+const getData =  ( path ) =>{
+  $.ajax( path )
+    .then( allData =>{
+      allData.forEach( val =>{
+        let newItem = new Items( val );
+        // console.log( newItem );
+        newItem.renderData();
+      } );
+      // Here we are preventing the repetition of the options of the drop list.
+      let dropList = [...new Set( optionArray )];
+      dropList.forEach( option=> renderOption( option ) );
+      // Here we are removing the first empty section rendered.
+      $( '.page1' ).first().remove();
     } );
-    // Here we are preventing the repetition of the options of the drop list.
-    let dropList = [...new Set( optionArray )];
-    dropList.forEach( option=> renderOption( option ) );
-    // Here we are removing the first empty section rendered.
-    $( '#photo-template' ).first().remove();
-  } );
+};
+getData( './data/page.json' );
+
+$( '#pageOne' ).click( function () {
+  $( 'section' ).hide();
+  $( 'select' ).empty();
+  optionArray = [];
+
+  getData( './data/page.json' );
+
+} );
+
+$( '#pageTwo' ).click( function () {
+  $( 'section' ).hide();
+  $( 'select' ).empty();
+  optionArray = [];
+
+  getData( './data/page2.json' );
+} );
+
 
 
 // Creating our main Constructor; note that it only takes one parameter.
@@ -35,14 +58,9 @@ let allItems = [];
 console.log( allItems );
 // To render the data in the HTML
 Items.prototype.renderData = function(){
-  let itemsClone = $( '#photo-template' ).first().clone();
-  itemsClone.find( 'h2' ).text( this.title );
-  itemsClone.find( 'img' ).attr( 'src' , this.imageUrl );
-  itemsClone.find( 'p' ).text( this.description );
-  console.log( this.title );
-  itemsClone.addClass( this.keyword );
-  $( 'main' ).append( itemsClone );
-
+  let template = $( '#dataSet' ).html();
+  let data = Mustache.render( template, this );
+  $( 'main' ).append( data );
 };
 
 // Function to render the drop down list
@@ -61,7 +79,41 @@ function renderSelected ( ) {
   $( `.${selected}` ).show();
 }
 
+function sorting() {
+  allItems.sort( ( a,b )=>{
+    if( a.horns < b.horns ){
+      return 1;
+    } else if ( a.horns > b.horns ){
+      return -1;
+    } else{
+      return 0;
+    }}
+  );}
 
+$( '.sort' ).on( 'change', function ( event ) {
+  if ( event.value === 'number' ){
+    sorting();}
+  else{
+    sortByTitle();}
+  $( '.section' ).hide();
+  allItems.forEach( val =>{
+    val.renderData();
+  } );
+
+} );
+function sortByTitle() {
+  allItems.sort( ( a,b ) =>{
+    if ( a.keyword.toUpperCase() < b.keyword.toUpperCase() ){
+      return 1;
+    }
+    else if ( a.keyword.toUpperCase() > b.keyword.toUpperCase() ){
+      return -1 ;
+    } else {
+      return 0;
+    }
+  }
+
+  ); }
 
 
 
