@@ -4,7 +4,7 @@
 let optionArray = [];
 
 // Get the data from the jason file
-$.ajax( './data/page.json' )
+$.ajax( '../data/page.json' )
   .then( allData =>{
     allData.forEach( val =>{
       let newItem = new Items( val );
