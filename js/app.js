@@ -1,11 +1,9 @@
 'use strict';
-// if ($('#pageOne').attr('id') === "pageOne"){
 
 // This array is created to push the options of the drop list.
 let optionArray = [];
-// let newItem;
-// Get the data from the jason file
 
+// Get the data from the jason file
 const getData =  ( path ) =>{
   $.ajax( path )
     .then( allData =>{
@@ -14,6 +12,7 @@ const getData =  ( path ) =>{
         // console.log( newItem );
         newItem.renderData();
       } );
+      // console.log(allData)
       // Here we are preventing the repetition of the options of the drop list.
       let dropList = [...new Set( optionArray )];
       dropList.forEach( option=> renderOption( option ) );
@@ -25,7 +24,7 @@ getData( './data/page.json' );
 
 $( '#pageOne' ).click( function () {
   $( 'section' ).hide();
-  $( 'select' ).empty();
+  $( '#filter' ).empty();
   optionArray = [];
 
   getData( './data/page.json' );
@@ -34,13 +33,11 @@ $( '#pageOne' ).click( function () {
 
 $( '#pageTwo' ).click( function () {
   $( 'section' ).hide();
-  $( 'select' ).empty();
+  $( '#filter' ).empty();
   optionArray = [];
 
   getData( './data/page2.json' );
 } );
-
-
 
 // Creating our main Constructor; note that it only takes one parameter.
 function Items( objectData ) {
@@ -79,43 +76,32 @@ function renderSelected ( ) {
   $( `.${selected}` ).show();
 }
 
-function sorting() {
-  allItems.sort( ( a,b )=>{
-    if( a.horns < b.horns ){
-      return 1;
-    } else if ( a.horns > b.horns ){
-      return -1;
-    } else{
-      return 0;
-    }}
-  );}
 
-$( '.sort' ).on( 'change', function ( event ) {
-  if ( event.value === 'number' ){
-    sorting();}
-  else{
-    sortByTitle();}
-  $( '.section' ).hide();
-  allItems.forEach( val =>{
-    val.renderData();
+$( '.sort' ).on( 'change', function () { $.ajax( './data/page.json' )
+  .then( allData =>{
+    let sortedData = $( '.sort' ).val();
+    console.log( sortedData );
+    allData.sort( ( a,b ) => {
+      if ( a[sortedData] < b[sortedData] ){
+        return -1;
+      }
+      else if ( a[sortedData] > b[sortedData] ) return 1;
+      else return 0;
+    } );
+    console.log( allData );
+    $( 'section' ).remove();
+
+    allData.forEach( val =>{
+      console.log( ' hello' , val );
+      let newItem = new Items( val );
+      newItem.renderData();
+      console.log( allData );
+
+
+      console.log( newItem );
+    } );
+
+    console.log( allData );
+
   } );
-
 } );
-function sortByTitle() {
-  allItems.sort( ( a,b ) =>{
-    if ( a.keyword.toUpperCase() < b.keyword.toUpperCase() ){
-      return 1;
-    }
-    else if ( a.keyword.toUpperCase() > b.keyword.toUpperCase() ){
-      return -1 ;
-    } else {
-      return 0;
-    }
-  }
-
-  ); }
-
-
-
-
-
