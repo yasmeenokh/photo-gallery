@@ -3,8 +3,16 @@
     margin: 0 auto;
     
 }
-h1{
-    text-align: center;
+
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    background-image: url('../img/5177180.jpg');
+    background-position: center;
+    background-size: cover;
+    color: #01497c;
 }
 
 
