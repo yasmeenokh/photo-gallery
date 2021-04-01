@@ -21,7 +21,7 @@ const getData =  ( path ) =>{
     } );
 };
 
-// To get the data from the required page; and linking it to the click button, we need to empty the filter list as well as the section. 
+// To get the data from the required page; and linking it to the click button, we need to empty the filter list as well as the section.
 getData( './data/page.json' );
 
 $( '#pageOne' ).click( function () {

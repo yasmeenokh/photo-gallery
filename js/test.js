@@ -62,3 +62,26 @@ function renderSelected ( ) {
 
 
 
+$( '.sort' ).on( 'change', function () {
+  $( 'section' ).empty();
+
+  let sortedData = $( '.sort' ).val();
+  console.log( sortedData );
+  console.log( allItems );
+  allItems.sort( ( a,b ) => {
+    if ( a[sortedData] < b[sortedData] ){
+      return -1;
+    }
+    else if ( a[sortedData] > b[sortedData] ) return 1;
+    else return 0;
+  } );
+  console.log( allItems );
+  $( 'section' ).remove();
+  allItems.forEach( val =>{
+    console.log( ' hello' , val );
+    val.renderData();
+    console.log( allItems );
+  } );
+
+  console.log( allItems );
+} );
