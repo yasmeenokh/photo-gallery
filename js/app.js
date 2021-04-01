@@ -20,6 +20,8 @@ const getData =  ( path ) =>{
       $( '.page1' ).first().remove();
     } );
 };
+
+// To get the data from the required page; and linking it to the click button, we need to empty the filter list as well as the section. 
 getData( './data/page.json' );
 
 $( '#pageOne' ).click( function () {
@@ -76,7 +78,7 @@ function renderSelected ( ) {
   $( `.${selected}` ).show();
 }
 
-
+// Sorting function according the title and # of horns
 $( '.sort' ).on( 'change', function () { $.ajax( './data/page.json' )
   .then( allData =>{
     let sortedData = $( '.sort' ).val();
